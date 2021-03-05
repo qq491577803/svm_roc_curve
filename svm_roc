@@ -1,0 +1,32 @@
+from sklearn import model_selection
+from sklearn import svm
+import matplotlib.pyplot as plt  # 画图
+from sklearn.metrics import roc_curve, precision_recall_curve, roc_auc_score, auc, average_precision_score  # ROC相关包
+
+Y = [2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,1,2,2,2,2,1,2,2,2,2,2,2,2,2,2,2,2,2,2]
+X = [[27.29795918], [31.82355007], [30.15671635], [26.89232314], [21.07719523], [26.23029308], [24.23489825], [26.13333333], [23.671875], [30.515798], [19.88677602], [25.27878375], [27.5640368], [28.69545788], [29.16199327], [22.62975779], [23.17946284], [24.79922665], [16.97293978], [27.15820778], [20.43816558], [24.609375], [19.89494022], [21.2585034], [22.39334027], [21.32035916], [24.89653319], [24.43518667], [27.23564756], [20.39542144], [27.52058109], [27.52413548], [26.03508939], [26.1919215], [23.00296158], [19.48696145], [26.61365573], [19.86024979], [27.44178321], [19.46090443], [22.39224483], [26.854802], [23.22162451], [26.8859823], [21.31995694], [22.30552085], [20.87990488], [24.31405021], [24.00786022], [21.36521035]]
+X_train, X_test, y_train, y_test = model_selection.train_test_split(X,Y, test_size=.3, random_state=0)
+svm = svm.SVC(kernel='linear', probability=True, random_state=0)
+y_score = svm.fit(X_train, y_train).decision_function(X_test)
+print(y_score)
+
+
+
+
+
+fpr, tpr, threshold = roc_curve(y_test, y_score, pos_label=1)  ###计算真正率和假正率
+roc_auc = auc(fpr, tpr)  ###计算auc的值
+
+plt.figure()
+lw = 2
+plt.figure(figsize=(10, 10))
+plt.plot(fpr, tpr, color='darkorange',
+         lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)  ###假正率为横坐标，真正率为纵坐标做曲线
+plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver operating characteristic example')
+plt.legend(loc="lower right")
+plt.show()
