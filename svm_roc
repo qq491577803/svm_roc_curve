@@ -11,6 +11,29 @@ y_score = svm.fit(X_train, y_train).decision_function(X_test)
 print(y_score)
 
 
+#***********数据初始化************#
+X1 = data0['bmi']
+X = []
+maxX = 44.18362442 #max(X1)
+minX = 13.88295221 #min(X1)
+for i in range(len(X1)):
+	tmp = []
+	init = (X1[i] - minX) / (maxX - minX)
+	tmp.append(init)
+	X.append(tmp)	
+	
+print(X)
+y = data0["糖尿病患者"]
+print(X[1:10])
+print(y[1:10])
+for i in range(len(y)):
+	if y[i] == 2:
+		y[i] = 0
+	else:
+		y[i] = 1
+#***********数据初始化************#
+
+
 
 
 
